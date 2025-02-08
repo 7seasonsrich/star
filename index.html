@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive Stargirl Website</title>
+  <style>
+    /* Reset defaults */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* Body & Background */
+    body {
+      background-color: #ffc0cb; /* light pink */
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+    }
+    #header {
+      font-size: 48px;
+      font-family: 'Brush Script MT', cursive;
+      color: #ff69b4;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    #header:hover {
+      transform: scale(1.1);
+    }
+
+    /* Main Content Layout */
+    #main {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      z-index: 2;
+      padding: 20px;
+    }
+    .column {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      width: 30%;
+      min-height: 300px;
+    }
+
+    /* Calculator (Left Column) */
+    #calculator { text-align: center; }
+    #calc-display {
+      width: 100%;
+      height: 40px;
+      margin-bottom: 10px;
+      padding: 5px;
+      font-size: 24px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: #eee;
+      text-align: right;
+    }
+    #calc-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+    }
+    #calc-buttons button {
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      background-color: #ff69b4;
+      color: white;
+      cursor: pointer;
+    }
+    #calc-buttons button:hover {
+      background-color: #ff85c1;
+    }
+
+    /* Affirmations (Center Column) */
+    #affirmations {
+      font-size: 24px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    /* Journal/Reminders (Right Column) */
+    #journal {
+      text-align: center;
+    }
+    #journal h2 {
+      margin-bottom: 10px;
+      color: #800080;
+    }
+    #journal textarea {
+      width: 100%;
+      height: 100px;
+      padding: 5px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: none;
+    }
+    #journal button {
+      padding: 8px 16px;
+      background-color: #ff69b4;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+    #journal button:hover {
+      background-color: #ff85c1;
+    }
+    #journal-entries {
+      margin-top: 10px;
+      text-align: left;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .journal-entry {
+      background: #fff;
+      margin-bottom: 5px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    /* External Buttons */
+    #external-buttons {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      margin: 20px 0;
+    }
+    #external-buttons button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(45deg, #ff69b4, #800080);
+      color: white;
+      cursor: pointer;
+    }
+    #external-buttons button:hover {
+      opacity: 0.8;
+    }
+
+    /* Floating Background Elements */
+    .floating {
+      position: absolute;
+      animation: floatUp linear infinite;
+      opacity: 0;
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-150px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating elements (stars, butterflies, hearts, flowers) will be added via JavaScript -->
+
+  <!-- Header -->
+  <header>
+    <h1 id="header" onclick="alert('You are a beautiful star!')">Hey Stargirl</h1>
+  </header>
+
+  <!-- Main Content -->
+  <div id="main">
+    <!-- Left: Calculator -->
+    <div class="column" id="calculator">
+      <div id="calc-display">0</div>
+      <div id="calc-buttons">
+        <button data-value="7">7</button>
+        <button data-value="8">8</button>
+        <button data-value="9">9</button>
+        <button data-value="/">/</button>
+        <button data-value="4">4</button>
+        <button data-value="5">5</button>
+        <button data-value="6">6</button>
+        <button data-value="*">*</button>
+        <button data-value="1">1</button>
+        <button data-value="2">2</button>
+        <button data-value="3">3</button>
+        <button data-value="-">-</button>
+        <button data-value="0">0</button>
+        <button data-value=".">.</button>
+        <button id="clear">C</button>
+        <button data-value="+">+</button>
+        <button id="equals" style="grid-column: span 4;">=</button>
+      </div>
+    </div>
+
+    <!-- Center: Affirmations -->
+    <div class="column" id="affirmations">
+      You are beautiful!
+    </div>
+
+    <!-- Right: Journal/Reminders -->
+    <div class="column" id="journal">
+      <h2>Journal / Reminders</h2>
+      <textarea id="journal-input" placeholder="Write your journal entry or reminder..."></textarea>
+      <button id="save-journal">Save Entry</button>
+      <div id="journal-entries"></div>
+    </div>
+  </div>
+
+  <!-- External Buttons for Instagram & Spotify -->
+  <div id="external-buttons">
+    <button onclick="window.open('https://www.instagram.com/accounts/login/', '_blank')">Instagram</button>
+    <button onclick="window.open('https://accounts.spotify.com/en/login', '_blank')">Spotify</button>
+  </div>
+
+  <script>
+    /* --- Floating Background Elements --- */
+    function createFloatingElement() {
+      const icons = ["⭐", "🦋", "❤️", "🌸"];
+      const icon = icons[Math.floor(Math.random() * icons.length)];
+      const span = document.createElement("span");
+      span.className = "floating";
+      span.innerText = icon;
+      // Random horizontal position and vertical starting point
+      span.style.left = Math.random() * 100 + "vw";
+      span.style.top = Math.random() * 100 + "vh";
+      // Random font size between 20px and 50px
+      span.style.fontSize = (20 + Math.random() * 30) + "px";
+      // Randomize animation duration (between 8 and 15 seconds) and delay
+      span.style.animationDuration = (8 + Math.random() * 7) + "s";
+      span.style.animationDelay = Math.random() * 5 + "s";
+      document.body.appendChild(span);
+    }
+    // Create 30 floating elements
+    for (let i = 0; i < 30; i++) {
+      createFloatingElement();
+    }
+
+    /* --- Calculator Functionality --- */
+    const display = document.getElementById('calc-display');
+    let expression = "";
+    document.getElementById('calc-buttons').addEventListener('click', function(e) {
+      if (e.target.tagName === 'BUTTON') {
+        if (e.target.id === "clear") {
+          expression = "";
+          display.innerText = "0";
+        } else if (e.target.id === "equals") {
+          try {
+            let result = eval(expression);
+            display.innerText = result;
+            expression = result.toString();
+          } catch (error) {
+            display.innerText = "Error";
+            expression = "";
+          }
+        } else {
+          expression += e.target.getAttribute("data-value");
+          display.innerText = expression;
+        }
+      }
+    });
+
+    /* --- Affirmations Slideshow --- */
+    const affirmations = [
+      "You are beautiful!",
+      "You are strong!",
+      "You are everything!",
+      "You are a shining star!"
+    ];
+    let affIndex = 0;
+    setInterval(() => {
+      affIndex = (affIndex + 1) % affirmations.length;
+      document.getElementById("affirmations").innerText = affirmations[affIndex];
+    }, 3000);
+
+    /* --- Journal / Reminders Functionality --- */
+    const journalInput = document.getElementById("journal-input");
+    const saveJournalBtn = document.getElementById("save-journal");
+    const journalEntries = document.getElementById("journal-entries");
+
+    saveJournalBtn.addEventListener("click", function() {
+      const entryText = journalInput.value.trim();
+      if (entryText !== "") {
+        const entryDiv = document.createElement("div");
+        entryDiv.className = "journal-entry";
+        entryDiv.innerText = entryText;
+        journalEntries.prepend(entryDiv);
+        journalInput.value = "";
+      }
+    });
+  </script>
+</body>
+</html>
